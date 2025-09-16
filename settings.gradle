@@ -1,0 +1,4 @@
+rootProject.name = 'payment-processing-system'
+
+include 'user-service'
+include 'notifications-service'
