@@ -20,4 +20,17 @@ public class ExceptionController {
                         .build()
                 );
     }
+
+
+    @ExceptionHandler(EmptyRequestException.class)
+    public ResponseEntity<ResponseHandler<String>> emptyRequestExceptionHandler(EmptyRequestException emptyRequestException){
+        return ResponseEntity
+                .status(HttpStatus.BAD_REQUEST)
+                .body(ResponseHandler.<String>builder()
+                        .code(HttpStatus.BAD_REQUEST.value())
+                        .status(HttpStatus.BAD_REQUEST)
+                        .message(emptyRequestException.getMessage())
+                        .build()
+        );
+    }
 }
