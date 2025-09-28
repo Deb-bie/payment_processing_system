@@ -34,8 +34,10 @@ public class User implements UserDetails {
     @Column(nullable = false)
     private String email;
 
-    @Column(nullable = false)
     private String password;
+
+    @Column(nullable = false)
+    private String provider;
 
     @Column(nullable = false, updatable = false)
     private Timestamp createdAt;
