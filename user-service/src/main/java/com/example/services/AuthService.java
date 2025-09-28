@@ -15,6 +15,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.sql.Timestamp;
@@ -26,15 +27,18 @@ public class AuthService {
     private final UserRepository userRepository;
     private final AuthenticationManager authenticationManager;
     private final JWTService jwtService;
+    private final PasswordEncoder passwordEncoder;
 
     public AuthService(
             UserRepository userRepository,
             AuthenticationManager authenticationManager,
-            JWTService jwtService
+            JWTService jwtService,
+            PasswordEncoder passwordEncoder
     ) {
         this.userRepository = userRepository;
         this.authenticationManager = authenticationManager;
         this.jwtService = jwtService;
+        this.passwordEncoder = passwordEncoder;
     }
 
 
@@ -47,10 +51,13 @@ public class AuthService {
                 throw new AlreadyExistsException("Email in use!");
             }
             if (isEmailValid(registerUserDto.getEmail())){
+                String encodedPassword = passwordEncoder.encode(registerUserDto.getPassword());
                 User newUser = User.builder()
                         .firstName(registerUserDto.getFirstName())
                         .lastName(registerUserDto.getLastName())
-                        .password(registerUserDto.getPassword())
+                        .email(registerUserDto.getEmail())
+                        .password(encodedPassword)
+                        .provider("LOCAL")
                         .createdAt(new Timestamp(System.currentTimeMillis()))
                         .updatedAt(new Timestamp(System.currentTimeMillis()))
                         .build();
