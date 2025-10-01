@@ -1,5 +1,6 @@
 package com.example.entities;
 
+
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -38,6 +39,9 @@ public class User implements UserDetails {
 
     @Column(nullable = false)
     private String provider;
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<UserPaymentMethod> paymentMethods;
 
     @Column(nullable = false, updatable = false)
     private Timestamp createdAt;
