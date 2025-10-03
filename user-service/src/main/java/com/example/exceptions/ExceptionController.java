@@ -56,4 +56,17 @@ public class ExceptionController {
                                 .message(kycVerificationException.getMessage())
                                 .build());
     }
+
+    @ExceptionHandler(Exceptions.class)
+    public ResponseEntity<ResponseHandler<String>> handleExceptions(Exceptions ex){
+        return ResponseEntity
+                .status(HttpStatus.INTERNAL_SERVER_ERROR)
+                .body(
+                        ResponseHandler.<String>builder()
+                                .code(HttpStatus.INTERNAL_SERVER_ERROR.value())
+                                .status(HttpStatus.INTERNAL_SERVER_ERROR)
+                                .message(ex.getMessage())
+                                .build()
+                );
+    }
 }
