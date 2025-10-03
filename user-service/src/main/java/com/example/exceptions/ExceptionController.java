@@ -44,4 +44,29 @@ public class ExceptionController {
                         .message(notFoundException.getMessage())
                         .build());
     }
+
+    @ExceptionHandler(KYCVerificationException.class)
+    public ResponseEntity<ResponseHandler<String>> kycVerificationExceptionHandler(KYCVerificationException kycVerificationException) {
+        return ResponseEntity
+                .status(HttpStatus.BAD_REQUEST)
+                .body(
+                        ResponseHandler.<String>builder()
+                                .code(HttpStatus.BAD_REQUEST.value())
+                                .status(HttpStatus.BAD_REQUEST)
+                                .message(kycVerificationException.getMessage())
+                                .build());
+    }
+
+    @ExceptionHandler(Exceptions.class)
+    public ResponseEntity<ResponseHandler<String>> handleExceptions(Exceptions ex){
+        return ResponseEntity
+                .status(HttpStatus.INTERNAL_SERVER_ERROR)
+                .body(
+                        ResponseHandler.<String>builder()
+                                .code(HttpStatus.INTERNAL_SERVER_ERROR.value())
+                                .status(HttpStatus.INTERNAL_SERVER_ERROR)
+                                .message(ex.getMessage())
+                                .build()
+                );
+    }
 }
